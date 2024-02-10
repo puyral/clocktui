@@ -5,10 +5,19 @@
   };
   outputs = { self, nixpkgs }:
     let
-      supportedSystems = [ "x86_64-linux" ];
+      supportedSystems = [
+        "i686-linux"
+        "x86_64-linux"
+        "aarch64-linux"
+        "armv7l-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
+        "powerpc64le-linux"
+      ];
       forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
       pkgsFor = nixpkgs.legacyPackages;
-    in {
+    in
+    {
       packages = forAllSystems (system: {
         default = pkgsFor.${system}.callPackage ./default.nix { };
       });
